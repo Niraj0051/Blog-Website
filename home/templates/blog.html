@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %} Blogs {% endblock %}
+{% block homeactive %} active {% endblock homeactive %}
+
+{% block css %}
+
+{% endblock %}
+{% block body %}
+<div class="container mt-5 mb-3">
+
+  <form method="POST" style="    display: flex;
+  gap: 1em;" action="/category/">
+    {% csrf_token %}
+    <label for="category">Select a category of a Blog:</label>
+    <select name="category" id="category">
+      <option value="all" id="all-categories">All categories</option>
+      <option value="personal" id="personal-category">Personal</option>
+      <option value="fashion" id="fashion-category">Fashion</option>
+      <option value="lifestyle" id="lifestyle-category">Lifestyle</option>
+      <option value="travel" id="travel-category">Travel</option>
+      <option value="food" id="food-category">Food</option>
+    </select>
+    <button class="btn btn-outline-secondary py-1" style="display:grid ; gap:1em" type="submit">go</button>
+    <!-- <button href="/category/" type="submit">Go</button> -->
+  </form>
+  
+
+    <div class="row">
+        {% for post in posts %}
+        <div class="col-lg-4 my-4">
+            <div class="card shadow" style="width: 20rem; height: 33rem;">
+                <img src="/media/{{post.image}}" class="card-img-top" alt="..." height="250px">
+                <div class="card-body">
+                  <h5 class="card-title">{{post.title}} <br><small>by {{post.author}}</small></h5>
+                  <p class="card-text">{{post.content| truncatechars:210}}</p>
+                  <a href="blog/{{post.slug}}" class="btn btn-primary">Read More {% if user.is_superuser %}<a href="delete_blog_post/{{post.slug}}/" class="btn btn-danger mx-4">Delete Blog</a>{% endif %}</a>
+                  <div style="width: 1em; height: 1em;"> 
+                    <a href="/like">
+
+                      {% comment %} <svg xmlns="http://www.w3.org/2000/svg"><path style="scale:0.5" d="M35.8 42H13.6V16.4L27.5 2l1.95 1.55q.3.25.45.7.15.45.15 1.1v.5L27.8 16.4h14.95q1.2 0 2.1.9.9.9.9 2.1v4.1q0 .35.075.725t-.075.725l-6.3 14.5q-.45 1.05-1.475 1.8Q36.95 42 35.8 42Zm-19.2-3h19.85l6.3-14.95V19.4H24.1l2.65-12.45-10.15 10.7Zm0-21.35V39Zm-3-1.25v3H6.95V39h6.65v3H3.95V16.4Z"/></svg> {% endcomment %}
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                        <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                      </svg>
+                    </a>
+                  </div>
+                  </div>
+                </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+{% block js %} 
+<script></script>
+{% endblock %}
